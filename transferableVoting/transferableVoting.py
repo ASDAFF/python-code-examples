@@ -1,7 +1,6 @@
-#SOME COOL CHANGES
-# an alternate reality here
 class Vote(object):
     def __init__(self,ballot = None):
+        ''' Vote object holds a persons multiple transferable votes'''
         self.votes = [ ]
         if ballot:
             self.votes = ballot
@@ -48,8 +47,6 @@ class Vote(object):
         assert v.getVotes() == [3,4] , 'transfer vote fails'
         v.transferVote(3)
         assert v.getVotes() == [4] , 'transfer vote fails'
-        
-
 
 class election(list):
     ''' an election is a collection of votes'''
@@ -60,13 +57,17 @@ class election(list):
         super(election, self).__init__(*args)
         
     def submit(self,vote):
+        '''submit a vote into the election'''
         return self.append(vote)
 
     def transferVote(self,knockoutvote):
+        ''' someone has been removed from the contest, so all of their votes are applied to the remaining contestants'''
         for f in self:
             f.transferVote(knockoutvote)
 
-    def getNumberOfVotes(self):
+    @property
+    def getNumberOfVoters(self):
+        ''' How many people have voted?'''
         return len(self)
 
     def output(self):
@@ -104,7 +105,7 @@ class election(list):
         print r.calculateWinner(e)
 
 class results(list):
-    ''' given an election object, this counts the results '''
+    ''' when given an election object this processes,counts and outputs the results '''
     def calculateVotes(self,election):
         import operator
         self.results  = {}
@@ -117,20 +118,17 @@ class results(list):
         # convert results to a list of tuples
         sortedresults = sorted(self.results.iteritems(), key=operator.itemgetter(1))
         return   sortedresults
-
     def outputResults(self,results):
         print'(candidate, # votes)'
         for r in results:
             print r
-
-
     def calculateWinner(self,e):
         print  'start calc'
         e.output()
         results = self.calculateVotes(e)
         winner = results[-1]
         loser = results[0]
-        while winner[1]<(e.getNumberOfVotes() % 2):
+        while winner[1]<(e.getNumberOfVoters % 2):
             e.transferVote(loser[0])
             results = self.calculateVotes(e)
             winner = results[-1]
@@ -147,18 +145,17 @@ if __name__ == "__main__":
     v.testVote()
     e = election()
     e.electionTest()
-    
-    #r.testresults()
-    e = election([
+
+    f = election([
         Vote([3,4,5]),
         Vote([3,5,4]),
         Vote([3,5,6]),
         Vote([4,5,3]),
         ])
-    e.output(   )
+    f.output()
     r = results()
-    r = r.calculateWinner(e)
+    r = r.calculateWinner(f)
 
 
-    print "bye World!"
+    print "done"
 
