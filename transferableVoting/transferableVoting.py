@@ -1,4 +1,18 @@
 class Vote(object):
+    '''
+    Votes for one person: candidates are listed in order
+    >>> v = Vote()
+    >>> v.castVote(1)
+    >>> v.castVote(2)
+    >>> v.getVotes()
+    [1, 2]
+    >>> v = Vote()
+    >>> v.castBallot([2,3,4])
+    >>> v.castVote(5)
+    >>> v.getVotes()
+    [2, 3, 4, 5]
+     
+'''
     def __init__(self,ballot = None):
         ''' Vote object holds a persons multiple transferable votes'''
         self.votes = [ ]
@@ -102,19 +116,51 @@ class election(list):
         e.submit(w)
         assert e.getNumberOfVoters == 4 , 'vote count fails'
         
-        r = results()
+        r = results(e)
 
-
-
-class results(list):
+class results(dict):
     ''' when given an election object this processes,counts and outputs the results '''
-    def calculateVotes(self,election):
-        import operator
-        print (election)
-        for f in election:
-            print(f)
+    def __init__(self,election):
+        self.election = election
+        self.NoVotesCast = election.getNumberOfVoters
+
+    def calculateVotes(self):
+        for f in self.election:
+            currentVote = f.getCurrentVote()
+            if currentVote in self:
+                self[currentVote] += 1
+            else:
+                self[currentVote] = 1
+
+    def calculatewinner(self):
+        self.calculateVotes()
+        d = self
+        loser = min (d,key = lambda a: d.get(a))
+        leader = max(d,key = lambda a: d.get(a))
+        leaderVoteCount = self[leader]
+        if leaderVoteCount > self.NoVotesCast // 2 :
+            # we have a winner
+            print (str(leader) + ' is the winner')
+            return leader
+        else:
+            if loser == 'None':
+                # this means there's a tie
+                print ('No clear winner of this election.')
+                print (self.election)
+                raise Exception( 'No winner for the election.')
+            #another round of tranferable voting
+            print (str(loser) + ' is knocked out of the race')
+            # remove the loser from the election consideration
+            e = self.election
+            e.transferVote(loser)
+            # see if we have a winner again
+            self = results(e)
+            self.calculatewinner()
 
 if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
+    
     print ("Start Transferable vote")
     v= Vote()
     v.testVote()
@@ -122,15 +168,23 @@ if __name__ == "__main__":
     e.electionTest()
 
     f = election([
-        Vote([3,4,5]),
-        Vote([3,5,4]),
-        Vote([3,5,6]),
-        Vote([4,5,3]),
+        Vote([1, 4, 5]),
+        Vote([3, 5, 4]),
+        Vote([3, 5, 6]),
+        Vote([4, 5, 3]),
+        Vote([1, 5, 3]),        
         ])
     f.output()
-    r = results()
-    r = r.calculateVotes(f)
-
-
-    print ("done")
-
+    r = results(f)
+    r.calculatewinner()
+    ''' produces:
+    
+    [1, 4, 5]
+    [3, 5, 4]
+    [3, 5, 6]
+    [4, 5, 3]
+    [1, 5, 3]
+    4 is knocked out of the race
+    5 is knocked out of the race
+    3 is the winner
+    '''
