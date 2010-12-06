@@ -1,6 +1,5 @@
 __author__ = 'julian'
 
-
 def cascadeSeries(step, r = [] ):
     '''
     >>> cascadeSeries(6,[])
@@ -28,15 +27,13 @@ def maxCycleLength(i,j):
         #print (str(n) + ' ' + '*' * cyclelength)
         cyclelengths[n] = cyclelength
     leader = max(cyclelengths,key = lambda a: cyclelengths.get(a))
-    return i, j ,  cyclelengths[leader]  # , leader
- 
+    return i, j ,  cyclelengths[leader]
+
+
 
 if __name__ == "__main__":
     import doctest
     doctest.testmod()
-
     print ("Start series")
-
     j = maxCycleLength(900,1000)
     print(j)
-    #print(cascadeSeries(j[3]))
