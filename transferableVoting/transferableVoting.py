@@ -51,10 +51,11 @@ class Vote(object):
 class election(list):
     ''' an election is a collection of votes'''
     def __init__(self,votelist = [],*args):
+        super(election, self).__init__(*args)
         if votelist:
             for f in votelist:
                 self.submit(f)
-        super(election, self).__init__(*args)
+
         
     def submit(self,vote):
         '''submit a vote into the election'''
@@ -102,43 +103,17 @@ class election(list):
         assert e.getNumberOfVoters == 4 , 'vote count fails'
         
         r = results()
-        print (r.calculateWinner(e))
+
+
 
 class results(list):
     ''' when given an election object this processes,counts and outputs the results '''
     def calculateVotes(self,election):
         import operator
-        self.results  = {}
+        print (election)
         for f in election:
-            currentVote = f.getCurrentVote()
-            if self.results.has_key(currentVote):
-                self.results[currentVote] += 1
-            else:
-                self.results[currentVote] = 1
-        # convert results to a list of tuples
-        sortedresults = sorted(self.results.iteritems(), key=operator.itemgetter(1))
-        return   sortedresults
-    def outputResults(self,results):
+            print(f)
 
-        for r in results:
-            print (r)
-    def calculateWinner(self,e):
-        print  ('start calc')
-        e.output()
-        results = self.calculateVotes(e)
-        winner = results[-1]
-        loser = results[0]
-        while winner[1]<(e.getNumberOfVoters % 2):
-            e.transferVote(loser[0])
-            results = self.calculateVotes(e)
-            winner = results[-1]
-            loser = results[0]
-            print ('winner, loser ')
-            print (winner, loser)
-        print ('winner')
-        print ( winner )
-
-     
 if __name__ == "__main__":
     print ("Start Transferable vote")
     v= Vote()
@@ -154,7 +129,7 @@ if __name__ == "__main__":
         ])
     f.output()
     r = results()
-    r = r.calculateWinner(f)
+    r = r.calculateVotes(f)
 
 
     print ("done")
