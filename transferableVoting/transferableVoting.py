@@ -24,11 +24,11 @@ class Vote(object):
         ''' who is being removed from consideration? '''
         try:            
             self.votes.remove(knockoutvote)
-        except ValueError,IndexError:
+        except (ValueError,IndexError):
             return 'None'
 
     def output(self):
-        print self.votes
+        print (self.votes)
 
     def testVote(self):
         v = Vote()
@@ -99,10 +99,10 @@ class election(list):
         x.castVote(2)
         e.submit(x)
         e.submit(w)
-        assert e.getNumberOfVotes() == 4 , 'vote count fails'
+        assert e.getNumberOfVoters == 4 , 'vote count fails'
         
         r = results()
-        print r.calculateWinner(e)
+        print (r.calculateWinner(e))
 
 class results(list):
     ''' when given an election object this processes,counts and outputs the results '''
@@ -119,11 +119,11 @@ class results(list):
         sortedresults = sorted(self.results.iteritems(), key=operator.itemgetter(1))
         return   sortedresults
     def outputResults(self,results):
-        print'(candidate, # votes)'
+
         for r in results:
-            print r
+            print (r)
     def calculateWinner(self,e):
-        print  'start calc'
+        print  ('start calc')
         e.output()
         results = self.calculateVotes(e)
         winner = results[-1]
@@ -133,14 +133,14 @@ class results(list):
             results = self.calculateVotes(e)
             winner = results[-1]
             loser = results[0]
-            print 'winner, loser '
-            print winner, loser
-        print 'winner'
-        print winner    
+            print ('winner, loser ')
+            print (winner, loser)
+        print ('winner')
+        print ( winner )
 
      
 if __name__ == "__main__":
-    print "Start Transferable vote"
+    print ("Start Transferable vote")
     v= Vote()
     v.testVote()
     e = election()
@@ -157,5 +157,5 @@ if __name__ == "__main__":
     r = r.calculateWinner(f)
 
 
-    print "done"
+    print ("done")
 
