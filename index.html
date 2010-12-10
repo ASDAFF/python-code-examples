@@ -1,0 +1,1 @@
+This is a simple catalogue of python scripts, written for fun & practice.Hence although the programming is meant to be somewhat efficient, using interestingconstructions and structures is also part of the project.
