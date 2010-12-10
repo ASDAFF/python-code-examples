@@ -7,7 +7,6 @@ in the initial writing.
 
 This would all be easier using OOP (& polymorphism in particular) but (for a change) not using that paradigm.
 
-
 Objectives:
 - investigate functions as 1st class objects
 - DRY: (don't repeat yourself) ie: everything menu related is in one dict.
