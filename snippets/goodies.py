@@ -21,6 +21,34 @@ def _test():
 if __name__ == "__main__":
     _test()
 
+# These from http://python.net/~goodger/projects/pycon/2007/idiomatic/handout.html
+''' idiom for formatting a human readable list'''
+colors = ['red', 'blue', 'green', 'yellow']
+print 'Choose', ', '.join(colors[:-1]), 'or', colors[-1]
 
-print (' .. and now for something completely different')
+def bad_append(new_item, a_list=[]):
+    a_list.append(new_item)
+    return a_list
+print bad_append('one')
+#['one']
+print bad_append('two')
+#['one', 'two']
+
+def good_append(new_item, a_list=None):
+    if a_list is None:
+        a_list = []
+    a_list.append(new_item)
+    return a_list
+print good_append('one')
+#['one']
+print good_append('two')
+#['two']
+
+# Advanced % String Formatting
+values = {'name': 'bob', 'messages': 42}
+print ('\nHello %(name)s, you have %(messages)i messages' % values)
+#print locals()
+
+
+print ('\n .. and now for something completely different...')
 import this
