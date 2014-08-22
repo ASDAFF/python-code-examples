@@ -1,1 +1,4 @@
-This is a simple catalogue of python scripts, written for fun & practice.Hence although the programming is meant to be somewhat efficient, using interestingconstructions and structures is also part of the project.
+Some python scripts written for fun & practice at codejams, for fun & practice, and so on.
+
+The scripts are meant to be somewhat efficient, but trying constructions and structures is also the goal!
+
